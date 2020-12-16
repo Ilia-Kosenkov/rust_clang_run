@@ -11,6 +11,9 @@ fn do_work() {
     };
 
     let idx = unsafe{(lib.functions.clang_createIndex.unwrap())(1, 1)};
+
+    println!("Index created by `libclang`: {:?}", idx);
+
     unsafe{(lib.functions.clang_disposeIndex.unwrap())(idx)};
     
     println!("Lib version: {:?}", lib.version().expect("Unable to read into libclang"));
@@ -19,7 +22,9 @@ fn do_work() {
 
 #[cfg(feature = "static")]
 fn do_work() {
-    unimplemented!();
+    let idx = unsafe{ clang_sys::clang_createIndex(1, 1) };
+    println!("Index created by `libclang`: {:?}", idx);
+    unsafe{ clang_sys::clang_disposeIndex(idx) };
 }
 
 #[cfg(all(not(feature = "runtime"), not(feature = "static")))]
