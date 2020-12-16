@@ -163,10 +163,10 @@ jobs:
           cargo build -vv --features runtime --release
       - name: List dir
         run: |
-          dir .\\target
+          dir .\\target\\release
       - name: Run
         run: |
-          .\\target\\i686-pc-windows-gnu\\release\\rust_clang_run.exe
+          .\\target\\release\\rust_clang_run.exe
         env:
           LIBCLANG_PATH: C:\msys64\mingw32\bin
   
