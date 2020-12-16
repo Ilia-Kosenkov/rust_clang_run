@@ -3,5 +3,9 @@ name = "rust_clang_run"
 version = "0.1.0"
 edition = "2018"
 
+[features]
+static = []
+runtime = ["clang-sys/runtime"]
+
 [dependencies]
-clang-sys = {version = "1.0.3", features = ["runtime"]}
+clang-sys = {version = "1.0.3"}
