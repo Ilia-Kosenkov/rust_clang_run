@@ -1,4 +1,4 @@
-# clang_link_test
+# Dynamically load & invoke `libclang` from `main.rs` 
 Testing `libclang` linking on Windows
 
 ## Steps to check & reproduce
