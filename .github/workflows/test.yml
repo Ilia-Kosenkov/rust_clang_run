@@ -14,8 +14,8 @@ on:
       - master
  
 jobs:
-  test_windows_x86:
-    name: Run tests (Windows x86_64)
+  test_windows_x86_64_runtime:
+    name: Run tests (Windows x86_64) at runtime
     runs-on: windows-latest
     defaults:
       run:
@@ -40,11 +40,42 @@ jobs:
           components: rustfmt, clippy
       - name: Build & Run
         run: |
-          cargo run -vv
+          cargo run -vv --features runtime
         env:
           LIBCLANG_PATH: C:/msys64/mingw64/bin
-  test_windows_i686:
-    name: Run tests (Windows i686)
+
+  test_windows_x86_64_static:
+    name: Run tests (Windows x86_64) static
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    strategy:
+      matrix:
+        rust-version: [stable-x86_64-pc-windows-gnu]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          path-type: inherit
+          release: false
+          update: false
+          install: >-
+            mingw-w64-x86_64-clang
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust-version }}
+          default: true
+          components: rustfmt, clippy
+      - name: Build & Run
+        run: |
+          cargo run -vv --features static
+        env:
+          LIBCLANG_PATH: C:/msys64/mingw64/bin
+  
+  test_windows_i686_runtime:
+    name: Run tests (Windows i686) at runtime
     runs-on: windows-latest
     defaults:
       run:
@@ -69,6 +100,36 @@ jobs:
           components: rustfmt, clippy
       - name: Build & Run
         run: |
-          cargo run -vv
+          cargo run -vv --features runtime
+        env:
+          LIBCLANG_PATH: C:\msys64\mingw32\bin
+  
+  test_windows_i686_static:
+    name: Run tests (Windows i686) static
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    strategy:
+      matrix:
+        rust-version: [stable-i686-pc-windows-gnu]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW32
+          path-type: inherit
+          release: false
+          update: false
+          install: >-
+            mingw-w64-i686-clang
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust-version }}
+          default: true
+          components: rustfmt, clippy
+      - name: Build & Run
+        run: |
+          cargo run -vv --features static
         env:
           LIBCLANG_PATH: C:\msys64\mingw32\bin
