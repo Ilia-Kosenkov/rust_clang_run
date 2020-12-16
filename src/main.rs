@@ -1,5 +1,3 @@
-extern crate clang_sys;
-
 fn main() {
    do_work();
 }
@@ -24,7 +22,7 @@ fn do_work() {
     unimplemented!();
 }
 
-
+#[cfg(all(not(feature = "runtime"), not(feature = "static")))]
 fn do_work() {
     panic!("Run program with one of the features: \"static\" or \"runtime\"");
 }
