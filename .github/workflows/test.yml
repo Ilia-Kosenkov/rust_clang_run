@@ -161,6 +161,9 @@ jobs:
       - name: Build
         run: |
           cargo build -vv --features runtime --release
+      - name: List dir
+        run: |
+          dir .\\target
       - name: Run
         run: |
           .\\target\\i686-pc-windows-gnu\\release\\rust_clang_run.exe
