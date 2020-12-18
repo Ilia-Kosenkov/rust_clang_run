@@ -153,7 +153,7 @@ jobs:
           LIBCLANG_PATH: C:\msys64\mingw32\bin
   
   test_windows_i686_runtime_msvc:
-    name: Run tests (Windows i686) at runtime
+    name: Using stable-i686-msvc
     runs-on: windows-latest
     defaults:
       run:
