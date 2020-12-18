@@ -134,6 +134,7 @@ jobs:
       - name: Swapping mingw and rust libs
         run: |
           "libgcc_s_dw2-1.dll", "libwinpthread-1.dll" | % {$rust_path = rustc --print sysroot;    "cp $rust_path\bin\$_ $rust_path\bin\$_.old" ;  $mingw_path = C:\msys64\mingw32\";  "cp $mingw_path\bin\$_  $rust_path\bin\$_"  } | Invoke-Expression
+        shell: pwsh
       - name: Build & Run
         run: |
           cargo run -vv --features static
