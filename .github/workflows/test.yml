@@ -98,6 +98,9 @@ jobs:
           toolchain: ${{ matrix.rust-version }}
           default: true
           components: rustfmt, clippy
+      - name: Remove rust mingw component
+        run: |
+          rustup component remove rust-mingw
       - name: Build & Run
         run: |
           cargo run -vv --features runtime
@@ -128,6 +131,9 @@ jobs:
           toolchain: ${{ matrix.rust-version }}
           default: true
           components: rustfmt, clippy
+      - name: Remove rust mingw component
+        run: |
+          rustup component remove rust-mingw
       - name: Build & Run
         run: |
           cargo run -vv --features static
