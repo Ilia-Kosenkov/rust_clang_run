@@ -152,15 +152,15 @@ jobs:
         env:
           LIBCLANG_PATH: C:\msys64\mingw32\bin
   
-  test_windows_i686_runtime_direct:
-    name: Run i686 exe, runtime
+  test_windows_i686_runtime_msvc:
+    name: Run tests (Windows i686) at runtime
     runs-on: windows-latest
     defaults:
       run:
         shell: msys2 {0}
     strategy:
       matrix:
-        rust-version: [stable-i686-pc-windows-gnu, nightly-i686-pc-windows-gnu]
+        rust-version: [stable-i686-pc-windows-msvc]
     steps:
       - uses: actions/checkout@v2
       - uses: msys2/setup-msys2@v2
@@ -174,47 +174,12 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: ${{ matrix.rust-version }}
+          target: i686-pc-windows-gnu
           default: true
           components: rustfmt, clippy
-      - name: Build
+      - name: Build & Run
         run: |
-          cargo build -vv --features runtime --release
-      - name: Run
-        run: |
-          .\\target\\release\\rust_clang_run.exe
-        env:
-          LIBCLANG_PATH: C:\msys64\mingw32\bin
-
-  test_windows_i686_static_direct:
-    name: Run i686 exe, static
-    runs-on: windows-latest
-    defaults:
-      run:
-        shell: msys2 {0}
-    strategy:
-      matrix:
-        rust-version: [stable-i686-pc-windows-gnu, nightly-i686-pc-windows-gnu]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: msys2/setup-msys2@v2
-        with:
-          msystem: MINGW32
-          path-type: inherit
-          release: false
-          update: false
-          install: >-
-            mingw-w64-i686-clang
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: ${{ matrix.rust-version }}
-          default: true
-          components: rustfmt, clippy
-      - name: Build
-        run: |
-          cargo build -vv --features static --release
-      - name: Run
-        run: |
-          .\\target\\release\\rust_clang_run.exe
+          cargo run -vv --features runtime
         env:
           LIBCLANG_PATH: C:\msys64\mingw32\bin
   
