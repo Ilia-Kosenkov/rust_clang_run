@@ -106,6 +106,7 @@ jobs:
             $mingw_path = "C:\msys64\mingw32\";  
             "cp $mingw_path\bin\$_  $rust_path\bin\$_"  
           } | Invoke-Expression
+        shell: pwsh
       - name: Build & Run
         run: |
           cargo run -vv --features runtime
