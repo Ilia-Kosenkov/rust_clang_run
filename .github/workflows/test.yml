@@ -98,9 +98,14 @@ jobs:
           toolchain: ${{ matrix.rust-version }}
           default: true
           components: rustfmt, clippy
-      - name: Remove rust mingw component
+      - name: Swapping mingw and rust libs
         run: |
-          rustup component remove rust-mingw
+          "libgcc_s_dw2-1.dll", "libwinpthread-1.dll" | % {
+            $rust_path = rustc --print sysroot;    
+            "cp $rust_path\bin\$_ $rust_path\bin\$_.old" ; 
+            $mingw_path = "C:\msys64\mingw32\";  
+            "cp $mingw_path\bin\$_  $rust_path\bin\$_"  
+          } | Invoke-Expression
       - name: Build & Run
         run: |
           cargo run -vv --features runtime
@@ -133,7 +138,12 @@ jobs:
           components: rustfmt, clippy
       - name: Swapping mingw and rust libs
         run: |
-          "libgcc_s_dw2-1.dll", "libwinpthread-1.dll" | % {$rust_path = rustc --print sysroot;    "cp $rust_path\bin\$_ $rust_path\bin\$_.old" ;  $mingw_path = "C:\msys64\mingw32\";  "cp $mingw_path\bin\$_  $rust_path\bin\$_"  } | Invoke-Expression
+          "libgcc_s_dw2-1.dll", "libwinpthread-1.dll" | % {
+            $rust_path = rustc --print sysroot;    
+            "cp $rust_path\bin\$_ $rust_path\bin\$_.old" ; 
+            $mingw_path = "C:\msys64\mingw32\";  
+            "cp $mingw_path\bin\$_  $rust_path\bin\$_"  
+          } | Invoke-Expression
         shell: pwsh
       - name: Build & Run
         run: |
